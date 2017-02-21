@@ -8,8 +8,16 @@ from sys import platform
 yesList = ["YES", "Y", ""]
 noList = ["NO", "N"]
 osList = ["LINUX", "LINUX2", "WIN32", "DARWIN"]
-pythonBinWin = os.path.join(os.getcwd(), "Python_101\\Scripts\\python")
-pythonBinLin = os.path.join(os.getcwd(), "Python_101/bin/python")
+envName = "Python_101"
+if len(sys.argv) > 1:
+    envName = sys.argv[1]
+pythonBinWin = os.path.join(os.getcwd(), envName, "Scripts\\python")
+pythonBinLin = os.path.join(os.getcwd(), envName, "bin/python")
+reqName = "requirements.txt"
+reqFlag = False
+if len(sys.argv) > 2:
+    reqName = sys.argv[2]
+    reqFlag = True
 
 def install(package):
     print("Installing {}...".format(package))
@@ -18,31 +26,40 @@ def install(package):
 def setup_linux():
     print("Beginning install")
     install("virtualenv")
-    print("Setting up virtual environment: Python_101")
-    subprocess.call(["virtualenv", "Python_101"])
+    print("Setting up virtual environment: " + envName)
+    subprocess.call(["virtualenv", envName])
     print("Installing necessary imports in virtual environment")
-    subprocess.call([pythonBinLin, "pipInstall.py"])
+    if reqFlag:
+        subprocess.call([pythonBinLin, "pipInstall.py", reqName])
+    else:
+        subprocess.call([pythonBinLin, "pipInstall.py"])
     print("Switching to new environment")
     os.system('/bin/bash --rcfile setActive.sh')
     print("Environment Setup")
     
 def setup_windows():
     install("virtualenv")
-    print("Setting up virtual environment: Python_101")
-    subprocess.call(["virtualenv", "Python_101"])
+    print("Setting up virtual environment: " + envName)
+    subprocess.call(["virtualenv", envName])
     print("Installing necessary imports in virtual environment")
-    subprocess.call([pythonBinWin, "pipInstall.py"])
+    if reqFlag:
+        subprocess.call([pythonBinWin, "pipInstall.py", reqName])
+    else:
+        subprocess.call([pythonBinWin, "pipInstall.py"])
     print("Environment Setup")
     print("To switch to your new environment, please enter the following: '" + str(os.getcwd()) +
-          "\\Python_101\\Scripts\\activate")
+          "\\" + envName + "\\Scripts\\activate")
 
 def setup_osx():
     print("Beginning install")
     install("virtualenv")
-    print("Setting up virtual environment: Python_101")
-    subprocess.call(["virtualenv", "Python_101"])
+    print("Setting up virtual environment: " + envName)
+    subprocess.call(["virtualenv", envName])
     print("Installing necessary imports in virtual environment")
-    subprocess.call([pythonBinLin, "pipInstall.py"])
+    if reqFlag:
+        subprocess.call([pythonBinLin, "pipInstall.py", reqName])
+    else:
+        subprocess.call([pythonBinLin, "pipInstall.py"])
     print("Switching to new environment")
     os.system('/bin/bash --rcfile setActive.sh')
     print("Environment Setup")
@@ -209,4 +226,6 @@ def main():
         setup3()
 
 if __name__ == "__main__":
+    if len(sys.argv) > 4:
+        print("Too many arguments, see usage.")
     main()

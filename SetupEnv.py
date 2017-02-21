@@ -5,6 +5,7 @@ import subprocess
 
 from sys import platform
 
+version = sys.version_info.major
 yesList = ["YES", "Y", ""]
 noList = ["NO", "N"]
 osList = ["LINUX", "LINUX2", "WIN32", "DARWIN"]
@@ -18,6 +19,7 @@ reqFlag = False
 if len(sys.argv) > 2:
     reqName = sys.argv[2]
     reqFlag = True
+activateThisFile = os.path.join(os.getcwd(), envName, "bin/activate_this.py")
 
 def install(package):
     print("Installing {}...".format(package))
@@ -29,12 +31,16 @@ def setup_linux():
     print("Setting up virtual environment: " + envName)
     subprocess.call(["virtualenv", envName])
     print("Installing necessary imports in virtual environment")
+    if version == 2:
+        execfile(activateThisFile, dict(__file__ = activateThisFile))
+    else:
+        exec (activateThisFile, dict(__file__ = activateThisFile))
     if reqFlag:
         subprocess.call([pythonBinLin, "pipInstall.py", reqName])
     else:
         subprocess.call([pythonBinLin, "pipInstall.py"])
     print("Switching to new environment")
-    os.system('/bin/bash --rcfile setActive.sh')
+    os.system('/bin/bash --rcfile setActive.sh ' + str(os.getcwd()))
     print("Environment Setup")
     
 def setup_windows():
@@ -56,6 +62,10 @@ def setup_osx():
     print("Setting up virtual environment: " + envName)
     subprocess.call(["virtualenv", envName])
     print("Installing necessary imports in virtual environment")
+    if version == 2:
+        execfile(activateThisFile, dict(__file__ = activateThisFile))
+    else:
+        exec (activateThisFile, dict(__file__ = activateThisFile))
     if reqFlag:
         subprocess.call([pythonBinLin, "pipInstall.py", reqName])
     else:
@@ -219,7 +229,6 @@ def setup2():
             print("This OS is not supported. Exiting script...")
 
 def main():
-    version = sys.version_info.major
     if version == 2:
         setup2()
     else:

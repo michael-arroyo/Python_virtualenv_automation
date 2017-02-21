@@ -61,7 +61,7 @@ def setup_osx():
     else:
         subprocess.call([pythonBinLin, "pipInstall.py"])
     print("Switching to new environment")
-    os.system('/bin/bash --rcfile setActive.sh')
+    os.system('/bin/bash --rcfile setActive.sh ' + str(os.getcwd()))
     print("Environment Setup")
     
 def setup3():
@@ -168,7 +168,7 @@ def setup2():
                 else:
                     print("That is not a valid OS")
             else:
-                print("That is not a valid raw_input.")
+                print("That is not a valid input.")
         elif platform == "win32":
             answer = raw_input("Windows OS detected. Is this correct? (Y/N) [Default: Y] ")
             answer = answer.upper()
@@ -214,7 +214,7 @@ def setup2():
                 else:
                     print("That is not a valid OS")
             else:
-                print("That is not a valid raw_input.")
+                print("That is not a valid input.")
         else:
             print("This OS is not supported. Exiting script...")
 

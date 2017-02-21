@@ -226,6 +226,6 @@ def main():
         setup3()
 
 if __name__ == "__main__":
-    if len(sys.argv) > 4:
+    if len(sys.argv) > 3:
         print("Too many arguments, see usage.")
     main()

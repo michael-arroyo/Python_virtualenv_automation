@@ -1,2 +1,4 @@
 #!/bin/bash
-. /Python_101/bin/activate
+dir=$1
+
+. ${dir}/bin/activate
